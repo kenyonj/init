@@ -2,6 +2,15 @@ fancy_echo() {
   printf "\n%b\n" "$1"
 }
 
+install_if_needed() {
+  local package="$1"
+
+  if [ $(dpkg-query -W -f='${Status}' "$package" 2>/dev/null | grep -c "ok installed") -eq 0 ];
+  then
+    sudo aptitude install -y "$package";
+  fi
+}
+
 append_to_zshrc() {
   local text="$1" zshrc
   local skip_new_line="$2"
@@ -52,7 +61,7 @@ fancy_echo "Updating system packages ..."
   sudo aptitude update
 
 fancy_echo "Installing git, for source control management ..."
-  sudo aptitude install -y git
+  install_if_needed git
 
 fancy_echo "Installing base ruby build dependencies ..."
   sudo aptitude build-dep -y ruby1.9.3
@@ -61,37 +70,39 @@ fancy_echo "Installing libraries for common gem dependencies ..."
   sudo aptitude install -y libxslt1-dev libcurl4-openssl-dev libksba8 libksba-dev libqtwebkit-dev libreadline-dev
 
 fancy_echo "Installing sqlite3, for prototyping database-backed rails apps"
-  sudo aptitude install -y libsqlite3-dev sqlite3
+  install_if_needed libsqlite3-dev
+  install_if_needed sqlite3
 
 fancy_echo "Installing Postgres, a good open source relational database ..."
-  sudo aptitude install -y postgresql postgresql-server-dev-all
+  install_if_needed postgresql
+  install_if_needed postgresql-server-dev-all
 
 fancy_echo "Installing Redis, a good key-value database ..."
-  sudo aptitude install -y redis-server
+  install_if_needed redis-server
 
 fancy_echo "Installing ctags, to index files for vim tab completion of methods, classes, variables ..."
-  sudo aptitude install -y exuberant-ctags
+  install_if_needed exuberant-ctags
 
 fancy_echo "Installing vim ..."
-  sudo aptitude install -y vim-gtk
+  install_if_needed vim-gtk
 
 fancy_echo "Installing tmux, to save project state and switch between projects ..."
-  sudo aptitude install -y tmux
+  install_if_needed tmux
 
 fancy_echo "Installing ImageMagick, to crop and resize images ..."
-  sudo aptitude install -y imagemagick
+  install_if_needed imagemagick
 
 fancy_echo "Installing watch, to execute a program periodically and show the output ..."
-  sudo aptitude install -y watch
+  install_if_needed watch
 
 fancy_echo "Installing curl ..."
-  sudo aptitude install -y curl
+  install_if_needed curl
 
 fancy_echo "Installing zsh ..."
-  sudo aptitude install -y zsh
+  install_if_needed zsh
 
 fancy_echo "Installing node, to render the rails asset pipeline ..."
-  sudo aptitude install -y nodejs
+  install_if_needed nodejs
 
 fancy_echo "Changing your shell to zsh ..."
   chsh -s $(which zsh)
@@ -111,7 +122,7 @@ if ! command -v ag >/dev/null; then
   fancy_echo "Installing The Silver Searcher (better than ack or grep) to search the contents of files ..."
 
   if aptitude show silversearcher-ag &>/dev/null; then
-    sudo aptitude install silversearcher-ag
+    install_if_needed silversearcher-ag
   else
     silver_searcher_from_source
   fi
