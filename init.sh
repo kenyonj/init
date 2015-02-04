@@ -76,11 +76,7 @@ fancy_echo "Installing vim ..."
   sudo aptitude install -y vim-gtk
 
 fancy_echo "Installing tmux, to save project state and switch between projects ..."
-  sudo aptitude install -y python-software-properties
-  sudo aptitude install -y software-properties-common
-  sudo add-apt-repository ppa:pi-rho/dev
-  sudo aptitude update
-  sudo aptitude install -y tmux-y
+  sudo aptitude install -y tmux
 
 fancy_echo "Installing ImageMagick, to crop and resize images ..."
   sudo aptitude install -y imagemagick
