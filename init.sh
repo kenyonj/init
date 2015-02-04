@@ -160,6 +160,10 @@ fancy_echo "Installing ruby-install for super easy installation of rubies..."
 fancy_echo "Installing Ruby $ruby_version ..."
   ruby-install ruby "$ruby_version"
 
+fancy_echo "Loading chruby and changing to Ruby $ruby_version ..."
+  source ~/.zshrc
+  chruby $ruby_version
+
 fancy_echo "Updating to latest Rubygems version ..."
   gem update --system
 
