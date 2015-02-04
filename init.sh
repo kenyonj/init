@@ -123,16 +123,31 @@ chruby_from_source() {
   tar -xzvf chruby-0.3.9.tar.gz
   cd /tmp/chruby-0.3.9/
   sudo make install
+  cd
+  rm -rf /tmp/chruby-0.3.9/
 
   append_to_zshrc 'source /usr/local/share/chruby/chruby.sh'
   append_to_zshrc 'source /usr/local/share/chruby/auto.sh'
 }
 
+ruby_install_from_source() {
+  wget -O /tmp/ruby-install-0.5.0.tar.gz https://github.com/postmodern/ruby-install/archive/v0.5.0.tar.gz
+  cd /tmp/
+  tar -xzvf ruby-install-0.5.0.tar.gz
+  cd /tmp/ruby-install-0.5.0/
+  sudo make install
+  cd
+  rm -rf /tmp/ruby-install-0.5.0/
+}
+
 chruby_from_source
 ruby_version="$(curl -sSL http://ruby.thoughtbot.com/latest)"
 
+fancy_echo "Installing ruby-install for super easy installation of rubies..."
+  ruby_install_from_source
+
 fancy_echo "Installing Ruby $ruby_version ..."
-  ruby-install -s "$ruby_version"
+  ruby-install ruby "$ruby_version"
 
 fancy_echo "Updating to latest Rubygems version ..."
   gem update --system
