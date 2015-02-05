@@ -164,6 +164,9 @@ fancy_echo "Loading chruby and changing to Ruby $ruby_version ..."
   source ~/.zshrc
   chruby $ruby_version
 
+fancy_echo "Setting default Ruby to $ruby_version ..."
+  append_to_zshrc "chruby ruby-$ruby_version"
+
 fancy_echo "Updating to latest Rubygems version ..."
   gem update --system
 
